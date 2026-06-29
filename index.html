@@ -4,270 +4,1298 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio website</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <title>Portfolio</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface2: #181818;
+      --accent: #ff4d00;
+      --accent2: #ff8c42;
+      --text: #f0ece4;
+      --muted: #6b6760;
+      --border: #242424;
+      --green: #00e676;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    .cursor {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+    }
+
+    .cursor-ring {
+      position: fixed;
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.12s ease, width 0.3s, height 0.3s, opacity 0.3s;
+      opacity: 0.5;
+    }
+
+    body:hover .cursor {
+      opacity: 1;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      backdrop-filter: blur(20px);
+      background: rgba(10, 10, 10, 0.85);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 3px;
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.4;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    .hero-orb {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 77, 0, 0.18) 0%, transparent 70%);
+      top: 50%;
+      left: 55%;
+      transform: translate(-50%, -50%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.7;
+      }
+
+      50% {
+        transform: translate(-50%, -50%) scale(1.15);
+        opacity: 1;
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.68rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 6px 14px;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: blink 1.2s ease infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0
+      }
+    }
+
+    .hero-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 8vw, 5rem);
+      line-height: 0.9;
+      letter-spacing: 2px;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+
+    .hero-name span {
+      color: var(--accent);
+    }
+
+    .hero-role {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      color: var(--muted);
+      margin: 1.2rem 0 2rem;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .hero-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.9;
+      max-width: 520px;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      animation: fadeUp 0.7s 0.4s ease both;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 32px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: none;
+      transition: all 0.25s;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 4rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+      animation: fadeUp 0.7s 0.5s ease both;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {}
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Scrolling ticker */
+    .ticker {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 14px 0;
+      white-space: nowrap;
+    }
+
+    .ticker-inner {
+      display: inline-flex;
+      gap: 0;
+      animation: ticker 20s linear infinite;
+    }
+
+    .ticker-item {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      color: var(--muted);
+      padding: 0 3rem;
+    }
+
+    .ticker-item span {
+      color: var(--accent);
+    }
+
+    @keyframes ticker {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* Section base */
+    section {
+      padding: 7rem 3rem;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 30px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    /* About */
+    #about {
+      background: var(--surface);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      margin-top: 3rem;
+    }
+
+    .about-text p {
+      font-size: 0.82rem;
+      line-height: 2;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .about-text p strong {
+      color: var(--text);
+    }
+
+    .about-highlight {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--text);
+      border-left: 3px solid var(--accent);
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+      line-height: 1.5;
+    }
+
+    .about-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+
+    .terminal-line {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+      line-height: 1.6;
+    }
+
+    .terminal-line .prompt {
+      color: var(--accent);
+      margin-right: 8px;
+    }
+
+    .terminal-line .cmd {
+      color: var(--green);
+    }
+
+    .terminal-line .val {
+      color: var(--accent2);
+    }
+
+    .terminal-line .str {
+      color: #a8e6cf;
+    }
+
+    /* Skills */
+    #skills {
+      background: var(--bg);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5px;
+      margin-top: 3rem;
+      border: 1.5px solid var(--border);
+    }
+
+    .skill-card {
+      background: var(--surface);
+      padding: 2rem;
+      border: 1.5px solid transparent;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card:hover {
+      background: var(--surface2);
+      border-color: var(--accent);
+      transform: scale(1.01);
+      z-index: 2;
+    }
+
+    .skill-card:hover .skill-icon {
+      transform: scale(1.15) rotate(-5deg);
+    }
+
+    .skill-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: block;
+      transition: transform 0.3s;
+    }
+
+    .skill-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-desc {
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .skill-bar-wrap {
+      margin-top: 1rem;
+      height: 2px;
+      background: var(--border);
+      overflow: hidden;
+    }
+
+    .skill-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      width: 0;
+      transition: width 1.2s ease;
+    }
+
+    .skill-pct {
+      font-size: 0.65rem;
+      color: var(--accent);
+      margin-top: 4px;
+      letter-spacing: 1px;
+    }
+
+    /* Projects */
+    #projects {
+      background: var(--surface);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5px;
+      margin-top: 3rem;
+      border: 1.5px solid var(--border);
+    }
+
+    .project-card {
+      background: var(--bg);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      cursor: none;
+      transition: background 0.3s;
+    }
+
+    .project-card:hover {
+      background: var(--surface2);
+    }
+
+    .project-card:hover .project-arrow {
+      transform: translate(4px, -4px);
+    }
+
+    .project-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      color: var(--border);
+      line-height: 1;
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      transition: color 0.3s;
+    }
+
+    .project-card:hover .project-num {
+      color: rgba(255, 77, 0, 0.15);
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 1.2rem;
+    }
+
+    .tag {
+      font-size: 0.6rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .project-card:hover .tag {
+      border-color: rgba(255, 77, 0, 0.4);
+      color: var(--accent2);
+    }
+
+    .project-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      letter-spacing: 1px;
+      margin-bottom: 0.8rem;
+      line-height: 1.1;
+    }
+
+    .project-desc {
+      font-size: 0.73rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-features {
+      list-style: none;
+    }
+
+    .project-features li {
+      font-size: 0.7rem;
+      color: var(--muted);
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .project-features li::before {
+      content: '▸';
+      color: var(--accent);
+      font-size: 0.6rem;
+    }
+
+    .project-arrow {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      font-size: 1.2rem;
+      color: var(--accent);
+      transition: transform 0.3s;
+    }
+
+    /* Experience Timeline */
+    #experience {
+      background: var(--bg);
+    }
+
+    .timeline {
+      margin-top: 3rem;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, var(--accent), transparent);
+    }
+
+    .timeline-item {
+      padding: 0 0 3rem 3rem;
+      position: relative;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: all 0.6s ease;
+    }
+
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -5px;
+      top: 6px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .timeline-date {
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-role {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-company {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .timeline-details {
+      list-style: none;
+    }
+
+    .timeline-details li {
+      font-size: 0.73rem;
+      color: var(--muted);
+      padding: 5px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.6;
+    }
+
+    .timeline-details li::before {
+      content: '//';
+      color: var(--accent);
+      font-size: 0.65rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Contact */
+    #contact {
+      background: var(--surface);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-bg-text {
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(8rem, 20vw, 18rem);
+      color: var(--border);
+      letter-spacing: 10px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      white-space: nowrap;
+      opacity: 0.5;
+    }
+
+    .contact-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .contact-email {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      letter-spacing: 3px;
+      color: var(--text);
+      text-decoration: none;
+      display: block;
+      margin: 2rem 0;
+      transition: color 0.3s;
+    }
+
+    .contact-email:hover {
+      color: var(--accent);
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .contact-link {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 10px 20px;
+      transition: all 0.25s;
+    }
+
+    .contact-link:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* Footer */
+    footer {
+      padding: 1.5rem 3rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* Scroll reveal base */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 1rem 1.5rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      section {
+        padding: 5rem 1.5rem;
+      }
+
+      #hero {
+        padding: 0 1.5rem;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stats {
+        gap: 2rem;
+      }
+
+      footer {
+        padding: 1.5rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <!---Navbar-->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-    <div class="container-fluid">
 
-      <a class="navbar-brand" href="#"> MyPortfolio.Com</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#home">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#About">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#skills">Skills</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#Intern">Projects</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#connect">contact</a>
-          </li>
-      </div>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-logo">PORTFOLIO</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
   </nav>
-  <section id="home">
-    <div class="text">
-      <div class="main">
-        <div class="content1">
-          <h1>Welcome to My Portfolio! </h1>
-          <h3>Myself Abinaya Thangam</h3>
-          <h5>I am a Full stack Web Developer Fresher</h5>
-          <a href="https://www.linkedin.com/in/abinaya-thangam-42079a274/" class="btn btn-info"><i class="fas fa-link link-icon"></i>CONNECT WITH ME</a>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-orb"></div>
+    <div class="hero-content">
+      <div class="hero-tag">Available for hire &nbsp;·&nbsp; PHP / Laravel Developer</div>
+      <h1 class="hero-name"><br><span>Abinaya Thangam J</span></h1>
+      <p class="hero-role">Backend Engineer & API Architect</p>
+      <p class="hero-desc">
+        PHP Laravel Developer focused on building scalable backend systems and high-performance web applications.
+        Experienced in payment integrations, shipping APIs, and designing clean, efficient architectures.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View My Work</a>
+        <a href="#contact" class="btn btn-outline">Let's Talk</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num" data-count="2">0</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-count="15">0</div>
+          <div class="stat-label">Projects Delivered</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-count="10">0</div>
+          <div class="stat-label">APIs Integrated</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-count="100">0</div>
+          <div class="stat-label">% Code Quality</div>
         </div>
       </div>
     </div>
   </section>
-  <!--about section-->
-  <section id="About">
-    <div class="circle">
-      <img src="images/abinaya.jpg">
-      <div class="content">
-        <h1>About Me</h1>
-        <p>Enthusiastic individual with a deep passion for web development. Driven to create efficient, innovative web
-          applications that make a meaningful impact on users. Eager to explore data analytics and embrace continuous
-          learning.</p>
-        <a href="https://drive.google.com/file/d/1qHi6havn029bgdrZHGJOv5-U3RYDHXcb/view?usp=sharing"
-          class="btn btn-info"> <i class="fas fa-link link-icon"></i>
-          RESUME
-        </a>
 
+  <!-- Ticker -->
+  <div class="ticker">
+    <div class="ticker-inner" id="tickerInner">
+      <span class="ticker-item">PHP <span>8.x</span></span>
+      <span class="ticker-item">LARAVEL <span>11</span></span>
+      <span class="ticker-item">STRIPE API</span>
+      <span class="ticker-item">SHIPPO API</span>
+      <span class="ticker-item">REST APIs</span>
+      <span class="ticker-item">MYSQL</span>
+      <span class="ticker-item">REDIS</span>
+      <span class="ticker-item">GIT</span>
+      <span class="ticker-item">BLADE TEMPLATES</span>
+      <span class="ticker-item">QUEUE JOBS</span>
+      <span class="ticker-item">ELOQUENT ORM</span>
+      <span class="ticker-item">PHP <span>8.x</span></span>
+      <span class="ticker-item">LARAVEL <span>11</span></span>
+      <span class="ticker-item">STRIPE API</span>
+      <span class="ticker-item">SHIPPO API</span>
+      <span class="ticker-item">REST APIs</span>
+      <span class="ticker-item">MYSQL</span>
+      <span class="ticker-item">REDIS</span>
+      <span class="ticker-item">BLADE TEMPLATES</span>
+      <span class="ticker-item">QUEUE JOBS</span>
+      <span class="ticker-item">ELOQUENT ORM</span>
+    </div>
+  </div>
 
+  <!-- About -->
+  <section id="about">
+    <div class="section-label">Who I Am</div>
+    <h2 class="section-title reveal">ABOUT ME</h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>
+          I'm a <strong>PHP & Laravel Developer</strong> with 2 years of hands-on experience building
+          full-featured web applications, RESTful APIs, and e-commerce platforms. My work spans
+          across shipping automation, payment processing, and backend architecture.
+        </p>
+        <div class="about-highlight">
+          "I don't just write code — I build systems that scale and pipelines that pay."
+        </div>
+        <p>
+          From integrating <strong>Shippo</strong> for real-time shipping rate calculations and label
+          generation, to wiring up <strong>Stripe</strong> for secure payment flows — I've built
+          production-grade integrations that process real transactions daily.
+        </p>
+        <p>
+          I follow clean code principles, MVC architecture, and Laravel best practices including
+          service layers, repository patterns, and test-driven development.
+        </p>
+      </div>
+      <div class="about-card reveal">
+        <div class="terminal-line"><span class="prompt">$</span><span class="cmd">PHP</span> developer.json</div>
+        <br>
+        <div class="terminal-line"><span style="color:var(--border)">{</span></div>
+        <div class="terminal-line">&nbsp;&nbsp;<span class="val">"name"</span>: <span class="str">"Abinaya Thangam
+            J"</span>,</div>
+        <div class="terminal-line">&nbsp;&nbsp;<span class="val">"role"</span>: <span class="str">"PHP Laravel
+            Developer"</span>,</div>
+        <div class="terminal-line">&nbsp;&nbsp;<span class="val">"experience"</span>: <span class="str">"2
+            years"</span>,</div>
+        <div class="terminal-line">&nbsp;&nbsp;<span class="val">"location"</span>: <span class="str">"Thoothukudi,
+            Tamil Nadu"</span>,</div>
+        <div class="terminal-line">&nbsp;&nbsp;<span class="val">"specialties"</span>: [</div>
+        <div class="terminal-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Laravel API Development"</span>,</div>
+        <div class="terminal-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Stripe Payment Integration"</span>,</div>
+        <div class="terminal-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Shippo Shipping API"</span>,</div>
+        <div class="terminal-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"E-commerce Backends"</span></div>
+        <div class="terminal-line">&nbsp;&nbsp;],</div>
+        <div class="terminal-line">&nbsp;&nbsp;<span class="val">"available"</span>: <span
+            style="color:var(--green)">true</span></div>
+        <div class="terminal-line"><span style="color:var(--border)">}</span></div>
+        <br>
+        <div class="terminal-line"><span class="prompt">$</span> <span style="color:var(--green)">_</span><span
+            class="cursor-blink">|</span></div>
       </div>
     </div>
-
   </section>
 
-  <!--skills section-->
-  <section id="skills" style="padding-top: 5%; padding-bottom: 2% ;">
-    <h2> My skills</h2>
-    <div class="services">
-      <div class="container">
-        <div>
-          <img src="images/ht.png" width="100" height="100">
-          <h3>HTML5</h3>
-          <p>Experienced in HTML5 development, proficient in creating dynamic and responsive web pages. Skilled in
-            leveraging HTML5 features to enhance user experience and ensure modern, cross-browser compatibility.</p>
+  <!-- Skills -->
+  <section id="skills">
+    <div class="section-label">Tech Stack</div>
+    <h2 class="section-title reveal">SKILLS &<br>EXPERTISE</h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <span class="skill-icon">🐘</span>
+        <div class="skill-name">PHP 8.x</div>
+        <div class="skill-desc">Modern PHP with OOP, traits, typed properties, enums, fibers, and match expressions.
         </div>
-
-        <div>
-          <img src="images/cs.jpg" width="100" height="100">
-          <h3>css3</h3>
-          <p>Experienced in CSS3 for responsive web design, ensuring visually appealing and user-friendly interfaces.
-            Proficient in styling, layout, and animations, enhancing websites with a strong aesthetic and seamless user
-            experience.</p>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar" data-width="90"></div>
         </div>
-
-        <div>
-          <img src="images/js.png" width="100" height="100">
-          <h3>JavaScript</h3>
-          <p>JavaScript expert with proficiency in front-end development, DOM manipulation, and frameworks. Skilled in
-            creating interactive and responsive web applications, ensuring optimal user experiences.
-          </p>
+        <div class="skill-pct">90% Proficiency</div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">🔴</span>
+        <div class="skill-name">Laravel 11</div>
+        <div class="skill-desc">Eloquent ORM, Blade, middleware, queues, events, broadcasting, Sanctum auth, and API
+          resources.</div>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar" data-width="88"></div>
         </div>
-        <div>
-          <img src="images/py.png" width="130" height="100">
-          <h3>Python</h3>
-          <p>Skilled in Python programming, adept at developing efficient and scalable solutions. Proficient in web
-            development, data analysis, and automation. Strong problem-solving skills and familiarity with popular
-            Libraries.
-          </p>
+        <div class="skill-pct">88% Proficiency</div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">💳</span>
+        <div class="skill-name">Stripe API</div>
+        <div class="skill-desc">Payment intents, webhooks, subscriptions, refunds, checkout sessions, and connected
+          accounts.</div>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar" data-width="85"></div>
         </div>
-        <div>
-          <img src="images/asp.net.png" width="100" height="100">
-          <h3>ASP.Net</h3>
-          <p>ASP.NET skills include creating, reading, updating, and deleting (CRUD) data in web applications.
-            Proficient in database interactions, formulating queries, and implementing seamless data management for
-            robust, dynamic web solutions.
-          </p>
+        <div class="skill-pct">85% Proficiency</div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">📦</span>
+        <div class="skill-name">Shippo API</div>
+        <div class="skill-desc">Shipping label generation, rate calculation, tracking, multi-carrier integration, and
+          address validation.</div>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar" data-width="83"></div>
         </div>
-        <div>
-          <img src="images/mysql.jpg" width="130" height="100">
-          <h3>Mysql</h3>
-          <p>Proficient in MySQL database management, adept at designing schemas, writing optimized queries, and
-            ensuring data integrity. Skilled in performance tuning, indexing, and database optimization for efficient
-            data retrieval.
-          </p>
+        <div class="skill-pct">83% Proficiency</div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">🗄️</span>
+        <div class="skill-name">MySQL & Redis</div>
+        <div class="skill-desc">Complex queries, indexing, migrations, caching strategies, and session management.</div>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar" data-width="80"></div>
         </div>
-        <div>
-          <img src="images/git.png" width="100" height="100">
-          <h3>Git</h3>
-          <p>Proficient in Git for version control, skilled in branching, merging, and resolving conflicts. Experienced
-            in collaborating on repositories, managing commits, and utilizing Git commands for effective code
-            collaboration and management.
-          </p>
+        <div class="skill-pct">80% Proficiency</div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">🔌</span>
+        <div class="skill-name">REST API Design</div>
+        <div class="skill-desc">Resource controllers, API versioning, token auth, rate limiting, and OpenAPI
+          documentation.</div>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar" data-width="87"></div>
         </div>
+        <div class="skill-pct">87% Proficiency</div>
       </div>
     </div>
-    </div>
   </section>
 
+  <!-- Projects -->
+  <section id="projects">
+    <div class="section-label">Portfolio</div>
+    <h2 class="section-title reveal">FEATURED<br>PROJECTS</h2>
+    <div class="projects-grid">
 
+      <div class="project-card reveal">
+        <div class="project-num">01</div>
+        <div class="project-tags">
+          <span class="tag">Laravel</span>
+          <span class="tag">Stripe</span>
+          <span class="tag">Shippo</span>
+          <span class="tag">MySQL</span>
+        </div>
+        <h3 class="project-title">E-Commerce Backend with Payment & Shipping Integration</h3>
+        <p class="project-desc">
+          Developed a scalable e-commerce backend handling end-to-end order processing,
+          including secure payments and real-time shipping integration.
+        </p>
+        <ul class="project-features">
+          <li>Implemented Stripe payment flow with webhook handling for order confirmation</li>
+          <li>Integrated Shippo API for real-time shipping rates and label generation</li>
+          <li>Designed order lifecycle (cart → checkout → shipment tracking)</li>
+          <li>Optimized database queries for faster product listing</li>
+        </ul>
+        <span class="project-arrow">↗</span>
+      </div>
 
-  <!--projects section-->
-
-  <section id="Intern" style="padding-top: 6%; padding-bottom: 4%;">
-
-    <div class="container mb-5">
-
-      <h51 class="text-center"><b>My Works</b></h51>
-      <ul>
-        <li>
-          <a href="https://www.linkedin.com/in/abinaya-thangam-42079a274/recent-activity/all/" style="text-decoration: none;"><p>INTERNSHIP EXPERIENCE -
-            Marlensoft Private Limited, Chennai</p></a>
-        </li>
-        <li>
-
-          <a href="https://github.com/Abinaya227/Portfolio-Website" style="text-decoration: none";><p>Portfolio Website (HTML5,CSS3, JavaScript,bootstrap)</p></a>
-        </li>
-        <li>
-
-          <a href="https://github.com/Abinaya227/farm" style="text-decoration: none";><p>Farming Hub (Java,JSP,Mysql)</p></a>
-        </li>
-        <li>
-
-          <p>Online Grocery Store (.NET,C#,Mysql)</p>
-        </li>
-        <li>
-
-          <p>Education-Loan Apply Website (HTML,CSS,JavaScript,PhP) </p>
-        </li>
-        <li>
-
-          <a href="https://github.com/Abinaya227/Bookreview" style="text-decoration: none;"><p>Booksky Website (HTML,CSS,Javascript)</p></a>
-        </li>
-
-      </ul>
-    </div>
-  </section>
-
-  <!---get touch with mw-->
-
-  <section id="connect">
-    <h4>Contact</h4>
-    <div class="card">
-      <h3>Get in touch</h3>
-      <p>As a diligent and eager fresher, I bring a solid foundation in Web Development, a proactive mindset, and a
-        passion for learning. Adaptable and collaborative, I am ready to contribute effectively.</p>
-      <h5><img src="images/name.jpg" alt="Name Icon">NAME</h5>
-      <p>Abinaya Thangam J</p>
-      <h5><img src="images/mail.png" alt="Email Icon">Email</h5>
-      <p>abinayathangam123@gmail.com</p>
-      <h5><img src="images/add.png" alt="ADD Icon">ADDRESS</h5>
-      <p>Tuticorin -TamilNadu</p>
-      <div class="mt-1">
-        <!-- GitHub icon with a link -->
-        <a href="https://github.com/Abinaya227" target="_blank" class="social-icon">
-          <img src="images/git.png" alt="GitHub" width="20" height="20" class="rounded-circle">
-        </a>
-        <a href="https://leetcode.com/AbinayaThangam/" target="_blank" class="social-icon">
-          <img src="images/leet.png" alt="GitHub" width="20" height="20" class="rounded-circle">
-        </a>
-        <a href="https://www.hackerrank.com/dashboard" target="_blank" class="social-icon">
-          <img src="images/hack.png" alt="GitHub" width="20" height="20" class="rounded-circle">
-        </a>
-        <a href="https://www.linkedin.com/in/abinaya-thangam-42079a274/" target="_blank" class="social-icon">
-          <img src="images/u.png" alt="GitHub" width="20" height="20" class="rounded-circle">
-        </a>
-        <!-- Add more social icons with links as needed -->
+      <div class="project-card reveal">
+        <div class="project-num">02</div>
+        <div class="project-tags">
+          <span class="tag">Laravel</span>
+          <span class="tag">API</span>
+          <span class="tag">JWT Auth</span>
+          <span class="tag">Redis</span>
+        </div>
+        <h3 class="project-title">Logistics & Real-Time Tracking System</h3>
+        <p class="project-desc">
+          Built a logistics tracking system that processes real-time shipping updates
+          and notifies users instantly.
+        </p>
+        <ul class="project-features">
+          <li>Handled Shippo webhooks to capture live tracking updates</li>
+          <li>Implemented queue system for background job processing</li>
+          <li>Automated customer notifications (email/SMS)</li>
+          <li>Designed bulk shipment processing for high-volume orders</li>
+        </ul>
+        <span class="project-arrow">↗</span>
       </div>
 
 
+
+      <div class="project-card reveal">
+        <div class="project-num">03</div>
+        <div class="project-tags">
+          <span class="tag">Laravel</span>
+          <span class="tag">REST API</span>
+          <span class="tag">Sanctum</span>
+          <span class="tag">MySQL</span>
+        </div>
+        <h3 class="project-title">Business Directory & Booking API</h3>
+        <p class="project-desc">
+          Developed a RESTful API for a service marketplace with booking,
+          search, and user interaction features.
+        </p>
+        <ul class="project-features">
+          <li>Built secure API authentication using Laravel Sanctum</li>
+          <li>Implemented advanced search with filters and pagination</li>
+          <li>Designed booking system with time-slot conflict handling</li>
+          <li>Created review & rating system with admin moderation</li>
+        </ul>
+        <span class="project-arrow">↗</span>
+      </div>
+
     </div>
   </section>
 
+  <!-- Experience -->
+  <section id="experience">
+    <div class="section-label">Work History</div>
+    <h2 class="section-title reveal">EXPERIENCE<br>TIMELINE</h2>
+    <div class="timeline">
 
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2024 — 2026</div>
+        <div class="timeline-role">PHP Laravel Developer</div>
+        <div class="timeline-company">App Innovation Technologies Pvt Ltd· Full-time</div>
+        <ul class="timeline-details">
+          <li>Built and maintained multiple Laravel-based web applications serving hundreds of active users with 99.9%
+            uptime.</li>
+          <li>Integrated Stripe payment gateway handling subscriptions, one-time payments, refunds, and webhook events.
+          </li>
+          <li>Implemented Shippo shipping API for automated rate calculation, label printing, and order tracking.</li>
+          <li>Designed and developed RESTful APIs consumed by mobile and frontend applications.</li>
+          <li>Optimized database queries with indexing and Eloquent relationship eager loading, reducing response times
+            by 40%.</li>
+          <li>Implemented Laravel queues for processing background jobs (emails, notifications, report generation).</li>
+        </ul>
+      </div>
 
+    </div>
+  </section>
 
-  <!--contact-->
-
+  <!-- Contact -->
   <section id="contact">
-
-    <div class="container mb-5">
-
-
-      <div class="row">
-
-        <div class="col-lg-7">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2302.586841479633!2d78.
-             04609112793723!3d8.69688673543113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b03f3a3ff3e99a1%3A0xec3b86ff59434cf8!2sSakkammalpuram!5e1!3m2!1sen!2sin!4v1704214580946!5m2!1sen!2sin"
-            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-
-        <div class="col-lg-5 col-12">
-          <form>
-            <div class="mb-3">
-              <label class="form-label">Username</label>
-              <input type="text" class="form-control" text="Your Name">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Email Address</label>
-              <input type="text" class="form-control">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Enter your message</label>
-              <textarea class="form-control" rows="5"></textarea>
-            </div>
-
-            <button class="btn btn-info">Send a message</button>
-
-
-
-        </div>
-        </form>
-
+    <div class="contact-bg-text">HELLO</div>
+    <div class="contact-inner">
+      <div class="section-label" style="justify-content:center">Let's Build Together</div>
+      <h2 class="section-title reveal">GET IN<br>TOUCH</h2>
+      <p style="font-size:0.78rem; color:var(--muted); line-height:1.8; margin-top:1rem;" class="reveal">
+        Actively seeking remote opportunities as a PHP Laravel Developer. Available for immediate joining, freelance
+        projects, and full-time roles.<br>
+        Let’s build something remarkable together.
+      </p>
+      <a href="mailto:abinayathangam123@gmail.com" class="contact-email reveal">abinayathangam123@gmail.com</a>
+      <div class="contact-links reveal">
+        <a href="https://www.linkedin.com/in/abinaya-thangam-42079a274" class="contact-link">LinkedIn</a>
+        <a href="https://drive.google.com/file/d/1Lk8pDMh7qcApnjod3urJMt6XsNkesU-6/view?usp=sharing"
+          class="contact-link">Download CV</a>
       </div>
     </div>
-    </div>
-    </div>
   </section>
+
+  <!-- Footer -->
   <footer>
-    <p>&copy; 2024. Designed and Developed By AbinayaThangam. All rights reserved.</p>
+    <span>© 2026 Abinaya Thangam — PHP Laravel Developer</span>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js">
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    function animCursor() {
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animCursor);
+    }
+    animCursor();
+    document.querySelectorAll('a, button, .skill-card, .project-card').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width = '20px'; cursor.style.height = '20px';
+        ring.style.width = '50px'; ring.style.height = '50px';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width = '10px'; cursor.style.height = '10px';
+        ring.style.width = '36px'; ring.style.height = '36px';
+      });
+    });
 
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Timeline observer
+    const tlObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.timeline-item').forEach(el => tlObs.observe(el));
+
+    // Skill bars
+    const skillObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const bar = e.target.querySelector('.skill-bar');
+          if (bar) bar.style.width = bar.dataset.width + '%';
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.skill-card').forEach(el => skillObs.observe(el));
+
+    // Counter animation
+    function animateCounter(el, target) {
+      let current = 0;
+      const step = target / 40;
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) { current = target; clearInterval(timer); }
+        el.textContent = Math.floor(current) + (target === 100 ? '' : '+');
+      }, 40);
+    }
+    const counterObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          document.querySelectorAll('[data-count]').forEach(el => {
+            animateCounter(el, parseInt(el.dataset.count));
+          });
+          counterObs.disconnect();
+        }
+      });
+    }, { threshold: 0.5 });
+    const statsEl = document.querySelector('.hero-stats');
+    if (statsEl) counterObs.observe(statsEl);
+
+    // Active nav
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 150) current = s.getAttribute('id');
+      });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+      });
+    });
+  </script>
 </body>
 
 </html>
